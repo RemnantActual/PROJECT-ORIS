@@ -15,6 +15,32 @@ Close the window to quit (a running render finishes first). Places and map cache
 
 Coordinates are hidden by default (a made-up grid code shows instead), but satellite close-ups still show the real place.
 
+## On iPhone (or any browser, no PC needed)
+The `web/` folder is ORIS rebuilt to run entirely in the browser: the same Studio steps, and the render happens on the phone itself (WebGL for the picture, WebCodecs for the MP4, the same synthesized sound).
+
+1. **Publish it once:** repository **Settings → Pages → Build and deployment → Source: GitHub Actions**. After that, every push to `main` that touches `web/` republishes it to `https://remnantactual.github.io/PROJECT-ORIS/`.
+2. Open that address in Safari, then **Share → Add to Home Screen** so it opens like an app.
+3. Pick a spot, **Get map data**, then **Preview** or **Full HD**. Keep ORIS open and on screen while it renders (switching apps or locking the phone stops it).
+4. **Save / Share video** opens the iPhone share sheet: choose **Save Video** to put it in Photos.
+
+Notes:
+- Needs iOS 16.4 or newer for video encoding. Sound is encoded into the MP4 on iOS 26 or newer; on older iOS the sound track comes as a separate `.wav`.
+- Saved places live in that browser on that device (Safari and the Home Screen app each keep their own). Use **⇩** to export a place file and **Import a place file** to move it between devices, including place files from the PC app.
+- The picture follows the PC renderer closely but isn't pixel-identical (cloud and grain noise are generated differently).
+
+| `web/` | |
+|---|---|
+| `index.html` | ORIS Studio for phones (made from `pick.html`): saves places on the device, renders in the page. |
+| `js/places.js` | Place file → map textures (port of `places.py`). |
+| `js/engine.js` | Camera, overlays and the per-pixel passes as WebGL2 shaders (port of `oris.py` / `oris_gpu.py`). |
+| `js/scene.js`, `js/hud.js` | The sequence and HUD (ports of `scene_demo.py` + `route.py`, `hud.py`). |
+| `js/sound.js` | Sound synthesizer (port of `sound.py`). |
+| `js/render.js` | Frames → H.264 + sound → MP4. |
+| `js/store.js` | Saved places on the device (IndexedDB). |
+| `vendor/` | Leaflet (map view) and mp4-muxer, both MIT, licenses included. |
+
+Keep the two versions in step: a change to the look in the Python files needs the same change in `web/js/`.
+
 ## What's here
 | | |
 |---|---|
