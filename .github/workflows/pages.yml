@@ -1,5 +1,4 @@
-# Publishes the browser version of ORIS (web/) to GitHub Pages, so it can be opened on an iPhone.
-# One-time setup: repository Settings → Pages → Build and deployment → Source: "GitHub Actions".
+# Publishes web/ to GitHub Pages.
 name: Publish ORIS web app
 
 on:

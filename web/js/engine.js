@@ -1,10 +1,4 @@
-// ORIS web — the render engine: camera, vector overlays (2D canvas) and the per-pixel passes (WebGL2).
-// Port of oris.py (Cam, CamPath, Overlay, Frame) and oris_gpu.py + shaders/. The frame lives on the GPU as a
-// float texture from the first map pass to the last post pass; only the two overlay canvases are uploaded.
-//
-// Pixel convention: (x, y) with y going DOWN the screen, pixel centres at +.5, exactly like the numpy arrays
-// in oris.py. GL rows run bottom-up, so screen row y is stored in GL row H-1-y everywhere (frame textures,
-// overlays as uploaded from a canvas, and the canvas the finished frame is drawn to) and nothing is flipped.
+// Camera, overlays and WebGL passes (port of oris.py / oris_gpu.py). Screen y runs down; GL row = H-1-y.
 import { ACC, DW, DH, EASE, MAP_TINT, PALE, RED, clamp, hexc, hsh, rng } from "./util.js";
 
 // ─────────────────────────── 3x3 matrices ───────────────────────────

@@ -1,5 +1,4 @@
-// ORIS web — shared helpers: timing curves, deterministic randomness, and the image maths the texture
-// builders need (Pillow-style resize, blur, fractal noise, gradients). Port of the helpers in oris.py.
+// Shared helpers (ports of oris.py helpers and the Pillow bits the textures need).
 
 // ─────────────── palette ───────────────
 export const DW = 1920, DH = 1080;   // design size: all HUD coordinates are in these px

@@ -1,5 +1,4 @@
-// ORIS web — HUD kit: screen chrome, panels, labels and map markers (port of hud.py).
-// All coordinates are design px (1920x1080). `ov` is a frame overlay (fr.hud or fr.ov).
+// HUD pieces (port of hud.py). Coordinates are 1920x1080 design px.
 import { ACC, DARK, GLYPH_SCRAMBLE, INK, MARK, PALE, RED, clamp, hsh, mixc, ramp, rng, typed } from "./util.js";
 
 const col_ = alert => mixc(INK, RED, alert);

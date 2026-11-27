@@ -1,5 +1,4 @@
-// ORIS web — saved places and routes, kept on this device (IndexedDB) instead of the PC app's places folder.
-// Two stores: places (file name → the whole place file) and meta (file name → what the Saved list shows).
+// Saved places on this device (IndexedDB).
 const DB = "oris", VER = 1;
 let dbp = null;
 function db() {
