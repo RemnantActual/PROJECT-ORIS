@@ -1,10 +1,9 @@
-// ORIS web — render a place or route into an MP4, entirely in the browser:
-// textures (places.js) → frames (scene.js on the WebGL engine) → H.264 via WebCodecs → MP4 (mp4-muxer),
-// with the synthesized sound track encoded alongside (AAC where the browser can, else Opus, else none).
+// Place file → video file, in the browser.
 import { ArrayBufferTarget, Muxer } from "../vendor/mp4-muxer.mjs";
 import { Engine, Frame, loadFonts } from "./engine.js";
 import { Scene } from "./scene.js";
 import * as S from "./sound.js";
+import { addPcmTrack } from "./mov.js";
 
 const yieldNow = (() => {   // a macrotask without setTimeout's 4 ms clamp, so the page stays responsive
   const ch = new MessageChannel(), q = [];
@@ -69,34 +68,37 @@ export async function still(place, fileKey, t, mode = "preview") {
   } finally { eng.destroy(); }
 }
 
-/** Render the whole sequence. Returns { blob, seconds, frames, audio: 'aac'|'opus'|null, wav: Blob|null }. */
-export async function render(place, fileKey, mode, { onProgress = () => {}, signal = null } = {}) {
+// Safari: sound as PCM in a .mov (its audio encoder is missing before iOS 26). Elsewhere: AAC/Opus in an .mp4.
+const APPLE = typeof navigator !== "undefined" && /Apple/.test(navigator.vendor || "");
+
+/** Render the whole sequence. Returns { blob, ext: 'mp4'|'mov', seconds, frames, audio: 'aac'|'opus'|'pcm'|null }. */
+export async function render(place, fileKey, mode, { onProgress = () => {}, signal = null, pcm = APPLE } = {}) {
   const t0 = performance.now();
   const { eng, scene, W, H } = await prepare(place, fileKey, mode, onProgress);
-  try { return await encode(eng, scene, W, H, t0, onProgress, signal); } finally { eng.destroy(); }
+  try { return await encode(eng, scene, W, H, t0, onProgress, signal, pcm); } finally { eng.destroy(); }
 }
 
-async function encode(eng, scene, W, H, t0, onProgress, signal) {
+async function encode(eng, scene, W, H, t0, onProgress, signal, pcm) {
   const check = () => {
     if (signal && signal.aborted) throw new Error("cancelled");
     if (eng.lost) throw new Error("the graphics context was lost (the app went to the background?). Keep ORIS open on screen while it renders");
   };
   const vid = await pickVideo(W, H);
   if (!vid) throw new Error("this browser can't encode video");
-  let aud = null, mixed = null, wavBlob = null;
+  let aud = null, mixed = null;
   if (scene.opt.sound !== false) {
     onProgress({ phase: "sound", frac: 0, what: "synthesizing sound" });
     await yieldNow();
     const mix = new S.Mix(scene.duration);
     scene.sounds(mix, S);
     mixed = mix.render();
-    aud = await pickAudio();
-    if (!aud) wavBlob = S.wav(mixed);   // no audio encoder here: hand the track over as a separate file
+    if (!pcm) aud = await pickAudio();
+    if (!aud) pcm = true;   // no audio encoder here: the sound goes in as PCM
   }
   check();
   const target = new ArrayBufferTarget();
   const muxer = new Muxer({
-    target, fastStart: "in-memory", firstTimestampBehavior: "offset",
+    target, fastStart: mixed && pcm ? false : "in-memory", firstTimestampBehavior: "offset",
     video: { codec: vid.mux, width: W, height: H, frameRate: scene.fps },
     ...(aud ? { audio: { codec: aud.mux, numberOfChannels: 2, sampleRate: S.SR } } : {}),
   });
@@ -146,6 +148,12 @@ async function encode(eng, scene, W, H, t0, onProgress, signal) {
     if (aErr) throw aErr;
   }
   muxer.finalize();
+  const seconds = () => (performance.now() - t0) / 1000;
+  if (mixed && !aud) {
+    onProgress({ phase: "audio", frac: 1, what: "adding sound" });
+    const mov = addPcmTrack(new Uint8Array(target.buffer), mixed[0], mixed[1], S.SR);
+    return { blob: new Blob([mov], { type: "video/quicktime" }), ext: "mov", seconds: seconds(), frames: N, audio: "pcm", codec: vid.cfg.codec };
+  }
   const blob = new Blob([target.buffer], { type: "video/mp4" });
-  return { blob, seconds: (performance.now() - t0) / 1000, frames: N, audio: aud ? aud.mux : null, wav: wavBlob, codec: vid.cfg.codec };
+  return { blob, ext: "mp4", seconds: seconds(), frames: N, audio: aud ? aud.mux : null, codec: vid.cfg.codec };
 }

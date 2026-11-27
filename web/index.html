@@ -110,23 +110,23 @@
 
   <section id="s1">
     <h2><b>1</b>PICK A SPOT</h2>
-    <div id="savedBox"><h3>SAVED ON THIS DEVICE <span id="savedN"></span> · tap one to reopen it, ready to render</h3><div id="saved"></div></div>
-    <div class="row" style="margin-bottom:12px"><button id="importBtn">IMPORT A PLACE FILE (.json)</button></div>
+    <div id="savedBox"><h3>SAVED <span id="savedN"></span></h3><div id="saved"></div></div>
+    <div class="row" style="margin-bottom:12px"><button id="importBtn">IMPORT</button></div>
     <input type="file" id="importFile" accept=".json,application/json" style="display:none">
     <div class="row"><input type="text" id="q" placeholder="Search a place or address…"><button id="go" style="flex:0 0 64px">FIND</button></div>
     <div id="results"></div>
     <div id="stops"></div>
     <button id="addStop" style="width:100%;margin-top:8px">+ ADD STOP</button>
-    <div id="target">Search above, or click the map to place stop A. Add more stops for a route: overview → A → B → …</div>
-    <div style="margin-top:10px"><input type="text" id="name" placeholder="Name (place or route, e.g. SITE-19 / NIGHT RUN)"></div>
+    <div id="target">Search or tap the map. Add stops for a route.</div>
+    <div style="margin-top:10px"><input type="text" id="name" placeholder="Name"></div>
   </section>
 
   <section id="s2">
     <h2><b>2</b>HOW MUCH AREA</h2>
     <div class="row" id="presets" style="flex-direction:column">
-      <button class="preset" data-t="3" data-c="400">NEIGHBORHOOD<small>a few streets up close · 6 km of terrain</small></button>
-      <button class="preset on" data-t="6" data-c="700">TOWN<small>a town centre up close · 12 km of terrain</small></button>
-      <button class="preset" data-t="15" data-c="1500">REGION<small>a district up close · 30 km of terrain</small></button>
+      <button class="preset" data-t="3" data-c="400">NEIGHBORHOOD<small>6 km</small></button>
+      <button class="preset on" data-t="6" data-c="700">TOWN<small>12 km</small></button>
+      <button class="preset" data-t="15" data-c="1500">REGION<small>30 km</small></button>
     </div>
     <details><summary>Fine-tune</summary>
       <label>TERRAIN SQUARE — <span id="trv"></span></label><input type="range" id="tr" min="1" max="25" step="0.5" value="6">
@@ -138,23 +138,21 @@
 
   <section id="s3">
     <h2><b>3</b>EFFECTS</h2>
-    <label class="tog"><input type="checkbox" id="o_sat" checked><i></i><span>Satellite detail in the close-up<small>real roofs, yards and trees</small></span></label>
-    <label class="tog"><input type="checkbox" id="o_haz" checked><i></i><span>Hazard clouds<small>yellow clouds bloom after the alert</small></span></label>
-    <label class="tog"><input type="checkbox" id="o_alert" checked><i></i><span>Connection error<small>alert at 10 s: red bar, panels drop to SIGNAL_LOST, alarm</small></span></label>
-    <label class="tog"><input type="checkbox" id="o_zone" checked><i></i><span>Containment zone<small>red pulsing circle in the last shot</small></span></label>
-    <label class="tog"><input type="checkbox" id="o_sound" checked><i></i><span>Sound<small>synthesized sound design, timed to every event</small></span></label>
-    <label class="tog"><input type="checkbox" id="o_coords"><i></i><span>Show real coordinates<small>off = a made-up grid code (safer to post)</small></span></label>
+    <label class="tog"><input type="checkbox" id="o_sat" checked><i></i><span>Satellite close-up</span></label>
+    <label class="tog"><input type="checkbox" id="o_haz" checked><i></i><span>Hazard clouds</span></label>
+    <label class="tog"><input type="checkbox" id="o_alert" checked><i></i><span>Connection error</span></label>
+    <label class="tog"><input type="checkbox" id="o_zone" checked><i></i><span>Containment zone</span></label>
+    <label class="tog"><input type="checkbox" id="o_sound" checked><i></i><span>Sound</span></label>
+    <label class="tog"><input type="checkbox" id="o_coords"><i></i><span>Real coordinates</span></label>
     <details id="subj"><summary>Subject panel</summary>
       <div id="subjFields"></div>
       <label style="margin-top:10px">PICTURE (optional)</label>
       <div class="row"><button id="subjPick">CHOOSE PICTURE</button><button id="subjClear" style="flex:0 0 80px">REMOVE</button></div>
       <input type="file" id="subjFile" accept="image/*" style="display:none">
       <img id="subjPrev" style="width:120px;margin-top:8px;display:none;border:1px solid var(--line)">
-      <div style="margin-top:6px;font-size:10px">Shown in the panel as a scanline feed. The picture is re-drawn on the page, which strips its metadata (no GPS).</div>
     </details>
     <details id="words"><summary>Words on screen</summary>
       <div id="wordFields"></div>
-      <div style="margin-top:8px;font-size:10px">Leave a box empty to keep the default. Changes save by themselves — just render again.</div>
     </details>
   </section>
 
@@ -168,19 +166,17 @@
 
   <section id="s5" class="off">
     <h2><b>5</b>RENDER</h2>
-    <div class="row"><button id="rPrev">PREVIEW<br><small>960×540 · quicker</small></button><button id="rFull">FULL HD<br><small>1920×1080 · routes longer</small></button></div>
+    <div class="row"><button id="rPrev">PREVIEW</button><button id="rFull">FULL HD</button></div>
     <div class="bar" id="bar"><div></div></div>
     <div id="barTxt"></div>
     <button id="rCancel" style="width:100%;margin-top:8px;display:none">CANCEL</button>
-    <div id="rNote" class="note">Renders on this device. Keep ORIS open and on screen until it's done: switching apps or locking the phone stops it.</div>
+    <div id="rNote" class="note">Keep ORIS open while it renders.</div>
     <div id="noRender"><span id="why"></span></div>
     <video id="vid" controls playsinline></video>
     <div class="row" id="vidBtns" style="margin-top:8px;display:none"><button id="saveVid">SAVE / SHARE VIDEO</button><button id="dlVid" style="flex:0 0 110px">DOWNLOAD</button></div>
-    <a id="wavLink" style="display:none;margin-top:8px;color:var(--acc)">Sound track (.wav): this browser couldn't put the sound inside the video</a>
   </section>
 
-  <div class="credit">Map data © OpenStreetMap contributors (ODbL) via OpenFreeMap (OpenMapTiles) and Overpass · Elevation: Terrain Tiles on AWS (Mapzen; SRTM, USGS and others) ·
-    Imagery © Esri, Maxar, Earthstar Geographics · Search: Nominatim / Photon · Map view: Leaflet · MP4: mp4-muxer</div>
+  <div class="credit">© OpenStreetMap contributors · Terrain Tiles on AWS · Imagery © Esri, Maxar, Earthstar Geographics</div>
 </div>
 
 <script src="vendor/leaflet/leaflet.js"></script>
@@ -195,7 +191,8 @@ const TERRAIN_TILE = (z, x, y) => `https://s3.amazonaws.com/elevation-tiles-prod
 const SAT_TILE = (z, x, y) => `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`;
 let center = null, place = null, placeFile = null, shapes = [];
 
-function log(msg, cls) {
+function log(msg, cls) {   // only problems are shown
+  if (cls !== "bad") return;
   const d = document.createElement("div"); d.textContent = msg; if (cls) d.className = cls;
   $("log").appendChild(d); $("log").scrollTop = 1e9;
 }
@@ -1125,11 +1122,10 @@ async function loadSaved() {
   for (const m of savedList) {
     const row = document.createElement("div"); row.className = "sv" + (m.file === placeFile ? " on" : "");
     const when = m.created ? new Date(m.created).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) : "";
-    const what = m.kind === "route" ? `${m.stops.length} stops` : `${m.tr * 2} km terrain · ${m.cr * 2} m close-up`;
     row.innerHTML = `<span class="k"></span><div class="tx"><div class="nm"></div><small></small></div><button class="ex" title="export the place file">⇩</button><button class="rm" title="remove from this device">✕</button>`;
     row.querySelector(".k").textContent = m.kind === "route" ? "ROUTE" : "PLACE";
     row.querySelector(".nm").textContent = m.name;
-    row.querySelector("small").textContent = `${what} · ${when} · ${(m.size / 1e6).toFixed(1)} MB`;
+    row.querySelector("small").textContent = when;
     row.title = m.file;
     row.onclick = e => { if (e.target.tagName !== "BUTTON") openSaved(m); };
     row.querySelector(".rm").onclick = () => removeSaved(m);
@@ -1209,7 +1205,7 @@ function tick() {
   const pct = parts.total ? Math.min(100, 100 * (parts.done + frac) / parts.total) : 0;
   $("mbar").firstElementChild.style.width = pct.toFixed(1) + "%";
   $("fetch").textContent = `GETTING MAP DATA… ${Math.floor(pct)}%`;
-  $("mbarTxt").textContent = `${parts.done} of ${parts.total} parts done${mStatus ? " · " + mStatus : ""}`;
+  $("mbarTxt").textContent = mStatus && /busy/.test(mStatus) ? mStatus : "";
 }
 function mstatus(s) { mStatus = s; tick(); }
 async function once(k, label, fn, counts = true) {
@@ -1315,16 +1311,15 @@ $("fetch").onclick = async () => {
     loadSaved();
     fetchActive = false;
     $("mbar").firstElementChild.style.width = "100%";
-    $("mbarTxt").textContent = `done · ${parts.total} of ${parts.total} parts`;
+    $("mbarTxt").textContent = "";
     $("fetch").textContent = "GET MAP DATA AGAIN";
     $("s5").classList.remove("off");
   } catch (e) {
     fetchActive = false;
     log("FAILED: " + e.message, "bad");
     $("mbar").classList.add("fail");
-    $("mbarTxt").textContent = `stopped at ${parts.done} of ${parts.total} parts · press GET MAP DATA AGAIN to fetch only what's missing`;
+    $("mbarTxt").textContent = "Stopped. Press GET MAP DATA AGAIN.";
     $("fetch").textContent = "GET MAP DATA AGAIN";
-    log("Press GET MAP DATA again — everything already downloaded is kept; only the missing part is fetched. (Don't reload the page.)", "bad");
   }
   $("fetch").disabled = false;
 };
@@ -1336,7 +1331,6 @@ async function checkRender() {
     const c = await R.capabilities();
     canRender = c.ok;
     if (!c.ok) showNoRender(c.why);
-    else if (!c.audio) $("rNote").textContent += " This browser can't encode sound into the video: the sound track comes as a separate .wav.";
   } catch (e) { showNoRender(e.message); }
 }
 function showNoRender(why) {
@@ -1355,35 +1349,32 @@ async function render(mode) {
   if (!placeFile || !canRender || rendering) return;
   rendering = true; abort = new AbortController();
   $("rPrev").disabled = $("rFull").disabled = true; $("rCancel").style.display = "block";
-  $("vid").style.display = "none"; $("vidBtns").style.display = "none"; $("wavLink").style.display = "none";
+  $("vid").style.display = "none"; $("vidBtns").style.display = "none";
   $("bar").style.display = "block"; $("bar").classList.remove("fail"); $("bar").firstElementChild.style.width = "0";
-  $("barTxt").textContent = "starting…";
+  $("barTxt").textContent = "Preparing…";
   await lockScreen();
   try {
     const p = await placeData();
     const res = await R.render(p, `${placeFile}|${p.created || ""}`, mode, { signal: abort.signal, onProgress: pr => {
       if (pr.phase === "frames") {
         $("bar").firstElementChild.style.width = `${10 + 90 * pr.frac}%`;
-        $("barTxt").textContent = `frame ${pr.frame} of ${pr.frames} · about ${Math.ceil(pr.left)} s left`;
+        $("barTxt").textContent = `Rendering ${Math.floor(pr.frac * 100)}%`;
       } else {
         $("bar").firstElementChild.style.width = `${10 * (pr.frac || 0)}%`;
-        $("barTxt").textContent = pr.phase === "build" ? `building map textures: ${pr.what}…` : `${pr.what}…`;
+        $("barTxt").textContent = "Preparing…";
       }
     } });
     const stem = placeFile.replace(/^place_/, "").replace(/\.json$/, "");
-    const name = `oris_${stem}${mode === "preview" ? "_preview" : ""}.mp4`;
+    const name = `oris_${stem}${mode === "preview" ? "_preview" : ""}.${res.ext}`;
     if (lastVideo) URL.revokeObjectURL(lastVideo.url);
     lastVideo = { blob: res.blob, name, url: URL.createObjectURL(res.blob) };
     $("bar").firstElementChild.style.width = "100%";
-    $("barTxt").textContent = `done in ${Math.round(res.seconds)} s · ${(res.blob.size / 1e6).toFixed(1)} MB · ${name}`;
+    $("barTxt").textContent = "Done";
     $("vid").src = lastVideo.url; $("vid").style.display = "block"; $("vidBtns").style.display = "flex";
-    if (res.wav) {
-      const a = $("wavLink"); a.href = URL.createObjectURL(res.wav); a.download = name.replace(/\.mp4$/, ".wav"); a.style.display = "block";
-    }
   } catch (e) {
     console.error(e);
     $("bar").classList.add("fail");
-    $("barTxt").textContent = e.message === "cancelled" ? "cancelled" : "render failed: " + e.message;
+    $("barTxt").textContent = e.message === "cancelled" ? "Cancelled" : "Render failed: " + e.message;
   } finally {
     rendering = false; abort = null;
     $("rPrev").disabled = $("rFull").disabled = !canRender; $("rCancel").style.display = "none";
@@ -1396,7 +1387,7 @@ $("rFull").onclick = () => render("full");
 $("rCancel").onclick = () => { if (abort) abort.abort(); };
 $("saveVid").onclick = async () => {   // iPhone: the share sheet has "Save Video" (to Photos)
   if (!lastVideo) return;
-  const file = new File([lastVideo.blob], lastVideo.name, { type: "video/mp4" });
+  const file = new File([lastVideo.blob], lastVideo.name, { type: lastVideo.blob.type });
   if (navigator.canShare && navigator.canShare({ files: [file] })) {
     try { await navigator.share({ files: [file] }); return; } catch (e) { if (e.name === "AbortError") return; }
   }

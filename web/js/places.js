@@ -1,8 +1,4 @@
-// ORIS web — turn a place file from the Studio into ORIS map textures (port of places.py).
-// A place file holds real data for one spot:
-//   terrain : elevation grid + major roads + water for the big square
-//   city    : every street, building, water body and green area for the close-up square
-// Coordinates in the file are already normalized to 0..1 inside each square, north up.
+// Place file → map textures (port of places.py).
 import {
   GrayDraw, autocontrast, b64bytes, blur, clamp, decodeGray, fbm, gimg, gradient, max3, percentile, resize, rng, toU8,
 } from "./util.js";

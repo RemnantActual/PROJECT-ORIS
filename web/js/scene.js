@@ -1,6 +1,4 @@
-// ORIS web — the sequence: one place (scene_demo.py) or a route of several stops (route.py).
-//   one place:  BOOT · TERRAIN 0–7.2 s · CITY 7.2–13 s · WIDE 13–17.6 s · OUTRO 17.6–19.5 s
-//   route:      overview of all stops → zoom to A → zoom out → shift to B → … → back to the overview → outro
+// The sequence: one place (scene_demo.py) or a route (route.py).
 import * as H from "./hud.js";
 import * as places from "./places.js";
 import { Cam, CamPath } from "./engine.js";

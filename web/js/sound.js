@@ -1,5 +1,4 @@
-// ORIS web — procedural sound design, synthesized from scratch (port of sound.py; no samples).
-// A scene lists timed events in sounds(mix); this renders them, puts them in a reverb space and masters the result.
+// Sound synthesizer (port of sound.py).
 import { rng } from "./util.js";
 
 export const SR = 48000;
