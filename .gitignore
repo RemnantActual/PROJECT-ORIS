@@ -1,0 +1,15 @@
+# Build output (attach ORIS.exe to a GitHub Release instead)
+ORIS.exe
+build/
+dist/
+*.spec
+
+# Renders, caches and personal place data
+renders/
+cache/
+places/
+_sheet_*.png
+
+# Python
+__pycache__/
+*.pyc
